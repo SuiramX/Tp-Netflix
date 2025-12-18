@@ -4,6 +4,7 @@ const connectDB = require("./config/db");
 require("dotenv").config();
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const { getMovies } = require("./controllers/moviesController"); // Importe getMovies
 
 const app = express();
 
@@ -70,12 +71,19 @@ const options = {
 const specs = swaggerJsdoc(options);
 
 // Route pour la documentation Swagger
-app.use("/api", swaggerUi.serve, swaggerUi.setup(specs));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+// Route racine : affiche la liste des films
+app.get("/", async (req, res) => {
+    try {
+        const movies = await Movie.find().populate("director");
+        res.json(movies);
+    } catch (err) {
+        res.status(500).send("Erreur lors de la récupération des films.");
+    }
+});
 
 // Routes
-app.get("/", (req, res) => {
-    res.send("Bienvenue sur l'API des films ! Pour accéder à la documentation, visitez <a href='/api-docs'>/api-docs</a>");
-});
 app.use("/api/movies", require("./routes/movies"));
 
 // Start server
