@@ -195,4 +195,5 @@ module.exports = {
     createMovie,
     updateMovie,
     deleteMovie,
+    Movie,
 };

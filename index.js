@@ -4,7 +4,7 @@ const connectDB = require("./config/db");
 require("dotenv").config();
 const swaggerJsdoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
-const { getMovies } = require("./controllers/moviesController"); // Importe getMovies
+const Movie = require("./controllers/moviesController").Movie; // Importe le modèle Movie
 
 const app = express();
 
@@ -65,7 +65,7 @@ const options = {
             },
         },
     },
-    apis: ["./controllers/*.js"], // Chemin vers les fichiers contenant les commentaires JSDoc
+    apis: ["./controllers/*.js"],
 };
 
 const specs = swaggerJsdoc(options);
@@ -79,7 +79,8 @@ app.get("/", async (req, res) => {
         const movies = await Movie.find().populate("director");
         res.json(movies);
     } catch (err) {
-        res.status(500).send("Erreur lors de la récupération des films.");
+        console.error("Erreur lors de la récupération des films :", err);
+        res.status(500).send(`Erreur lors de la récupération des films : ${err.message}`);
     }
 });
 
