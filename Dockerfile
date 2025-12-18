@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Installe les dépendances
-RUN npm install
+RUN npm install express mongoose dotenv body-parser
 
 # Copie tout le projet
 COPY . .
