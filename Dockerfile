@@ -16,5 +16,5 @@ COPY . .
 # Expose le port de l'app
 EXPOSE 3000
 
-# Démarrage
+# Commande pour démarrer l'application
 CMD ["node", "index.js"]
